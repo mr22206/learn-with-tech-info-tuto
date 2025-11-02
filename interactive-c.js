@@ -2,19 +2,16 @@
 // Il sera rempli à la prochaine étape.
 
 function initializeInteractiveBlocks() {
-    // Si les blocs sont déjà initialisés, on ne fait rien
     if (document.querySelector('.interactive-c-container')) {
         return;
     }
 
     const codeBlocks = document.querySelectorAll('pre.interactive-c');
     
-    // Si on ne trouve pas encore les blocs, on ne fait rien pour l'instant
     if (codeBlocks.length === 0) {
         return;
     }
 
-    // On a trouvé les blocs, on peut arrêter de vérifier
     if (intervalId) {
         clearInterval(intervalId);
     }
@@ -23,8 +20,14 @@ function initializeInteractiveBlocks() {
     
     codeBlocks.forEach(preElement => {
         const parentDiv = preElement.parentElement;
-        const initialCode = preElement.textContent.trim();
         
+        // Reconstitution intelligente du code source
+        let initialCode = '';
+        const lines = preElement.querySelectorAll('span[id^="cb"]');
+        lines.forEach(line => {
+            initialCode += line.innerText + '\n';
+        });
+
         const container = document.createElement('div');
         container.className = 'interactive-c-container';
 
@@ -46,18 +49,15 @@ function initializeInteractiveBlocks() {
         container.appendChild(editorWrapper);
         container.appendChild(output);
         
-        // Remplace l'ancien conteneur de code par notre nouvelle structure
         parentDiv.parentElement.replaceChild(container, parentDiv);
 
-        // Initialise l'éditeur CodeMirror
         const editor = CodeMirror(editorWrapper, {
-            value: initialCode,
+            value: initialCode.trim(),
             mode: 'text/x-csrc',
             lineNumbers: true,
             theme: 'eclipse'
         });
 
-        // Gère l'événement du clic sur le bouton "Exécuter"
         runButton.addEventListener('click', async () => {
             const code = editor.getValue();
             output.textContent = 'Compilation en cours...';
@@ -82,10 +82,8 @@ function initializeInteractiveBlocks() {
     });
 }
 
-// On lance une vérification toutes les 100ms
 const intervalId = setInterval(initializeInteractiveBlocks, 100);
 
-// Sécurité : on arrête tout après 5 secondes si rien n'est trouvé
 setTimeout(() => {
     if (intervalId) {
         clearInterval(intervalId);
