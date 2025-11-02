@@ -90,8 +90,6 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 </details>
 
 ---
----
----
 
 ## Corrigés
 

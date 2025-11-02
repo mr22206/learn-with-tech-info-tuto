@@ -82,8 +82,6 @@ Le principe du tri par sélection est : "à chaque passe, on trouve le plus peti
 </details>
 
 ---
----
----
 
 ## Corrigés
 

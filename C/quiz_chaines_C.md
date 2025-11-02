@@ -152,10 +152,6 @@ Cela prouve que dès qu'on sort des textes en anglais simple, `strlen` ne donne 
 
 </details>
 
----
----
----
-
 ## Corrigés
 
 ### <a id="r1-c-pdf"></a>Réponse à la Question 1

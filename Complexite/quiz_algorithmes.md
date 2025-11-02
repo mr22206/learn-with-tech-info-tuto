@@ -106,10 +106,6 @@ Quel sera l'état du tableau après la **première passe complète** de la boucl
 
 </details>
 
----
----
----
-
 ## Corrigés
 
 ### <a id="r1-algo-pdf"></a>Réponse à la Question 1
