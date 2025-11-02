@@ -1,7 +1,7 @@
 // Ce script sera vide pour l'instant.
 // Il sera rempli à la prochaine étape.
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
     // Initialise le compilateur C via WebAssembly
     const tcc = new TCC();
     
