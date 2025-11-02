@@ -1,31 +1,27 @@
 // Ce script sera vide pour l'instant.
 // Il sera rempli à la prochaine étape.
 
+// Fonction qui transforme les blocs de code statiques en éditeurs interactifs
 function initializeInteractiveBlocks() {
-    if (document.querySelector('.interactive-c-container')) {
-        return;
-    }
-
-    const codeBlocks = document.querySelectorAll('pre.interactive-c');
+    const codeBlocks = document.querySelectorAll('pre.interactive-c:not(.processed)');
     
     if (codeBlocks.length === 0) {
         return;
     }
 
-    if (intervalId) {
-        clearInterval(intervalId);
-    }
-    
+    // On arrête l'observateur une fois qu'on a trouvé les blocs pour éviter le travail inutile
+    observer.disconnect();
+
     const tcc = new TCC();
     
     codeBlocks.forEach(preElement => {
+        preElement.classList.add('processed'); // Marque le bloc pour ne pas le retraiter
         const parentDiv = preElement.parentElement;
         
-        // Reconstitution intelligente du code source
         let initialCode = '';
         const lines = preElement.querySelectorAll('span[id^="cb"]');
         lines.forEach(line => {
-            initialCode += line.innerText + '\n';
+            initialCode += line.textContent + '\n';
         });
 
         const container = document.createElement('div');
@@ -82,10 +78,20 @@ function initializeInteractiveBlocks() {
     });
 }
 
-const intervalId = setInterval(initializeInteractiveBlocks, 100);
+// L'observateur qui attend les modifications du DOM
+const observer = new MutationObserver(() => {
+    // Dès qu'une modification a lieu, on vérifie si nos blocs sont là
+    initializeInteractiveBlocks();
+});
 
-setTimeout(() => {
-    if (intervalId) {
-        clearInterval(intervalId);
-    }
-}, 5000);
+// Cible la zone de contenu principale de Quarto
+const mainContent = document.getElementById('quarto-document-content');
+if (mainContent) {
+    observer.observe(mainContent, {
+        childList: true,
+        subtree: true
+    });
+}
+
+// Un appel de secours au cas où les éléments seraient déjà là au moment où le script s'exécute
+window.addEventListener('load', initializeInteractiveBlocks);
