@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Quarto Integration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .debug-info { background: #f0f0f0; padding: 10px; margin: 10px 0; border-left: 4px solid #007acc; }
+        .interactive-c-container { border: 2px solid #ddd; border-radius: 8px; margin: 1em 0; padding: 1em; background: #f9f9f9; }
+        .interactive-c-header { display: flex; justify-content: flex-end; margin-bottom: 0.5em; }
+        .run-button { background: #28a745; color: white; border: none; padding: 0.5em 1em; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .run-button:hover { background: #218838; }
+        .output { background: #333; color: #fff; padding: 1em; border-radius: 4px; font-family: 'Courier New', monospace; white-space: pre-wrap; min-height: 100px; }
+        .code-block { background: #f5f5f5; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Debug Quarto Integration</h1>
+
+    <div class="debug-info">
+        <h3>Informations de debug :</h3>
+        <div id="debug-output"></div>
+    </div>
+
+    <h2>Bloc de code comme dans Quarto :</h2>
+    <pre class="sourceCode c interactive-c code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;string.h&gt;</span></span>
+
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> str1<span class="op">[]</span> <span class="op">=</span> <span class="st">"test"</span><span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> str2<span class="op">[</span><span class="dv">50</span><span class="op">]</span> <span class="op">=</span> <span class="st">"test"</span><span class="op">;</span></span>
+
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"sizeof(str1) = </span><span class="sc">%zu\n</span><span class="st">"</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>str1<span class="op">));</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"strlen(str1) = </span><span class="sc">%zu\n</span><span class="st">"</span><span class="op">,</span> strlen<span class="op">(</span>str1<span class="op">));</span></span>
+
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"sizeof(str2) = </span><span class="sc">%zu\n</span><span class="st">"</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>str2<span class="op">));</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"strlen(str2) = </span><span class="sc">%zu\n</span><span class="st">"</span><span class="op">,</span> strlen<span class="op">(</span>str2<span class="op">));</span></span>
+
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre>
+
+    <h2>Bloc de code simple :</h2>
+    <div class="code-block">
+        <pre>```{.c .interactive-c}
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    char str[] = "hello";
+    printf("Hello World\\n");
+    return 0;
+}
+```</pre>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
+    <script src="interactive-c.js"></script>
+
+    <script>
+        // Debug script
+        document.addEventListener('DOMContentLoaded', function() {
+            var debugOutput = document.getElementById('debug-output');
+
+            // Log d'initialisation
+            debugOutput.innerHTML += '<p>✅ DOMContentLoaded déclenché</p>';
+
+            // Vérifier CodeMirror
+            setTimeout(function() {
+                debugOutput.innerHTML += '<p>🔍 Vérification CodeMirror: ' +
+                    (typeof CodeMirror !== 'undefined' ? '✅ Chargé' : '❌ Non chargé') + '</p>';
+
+                // Vérifier les blocs interactifs
+                var interactiveBlocks = document.querySelectorAll('pre.interactive-c');
+                debugOutput.innerHTML += '<p>🔍 Blocs .interactive-c trouvés: ' + interactiveBlocks.length + '</p>';
+
+                // Lister tous les blocs pre
+                var allPreBlocks = document.querySelectorAll('pre');
+                debugOutput.innerHTML += '<p>🔍 Total blocs pre: ' + allPreBlocks.length + '</p>';
+
+                for (var i = 0; i < allPreBlocks.length; i++) {
+                    var classes = allPreBlocks[i].className;
+                    debugOutput.innerHTML += '<p>&nbsp;&nbsp;- pre classe: "' + classes + '"</p>';
+                }
+
+                // Vérifier les conteneurs interactifs créés
+                setTimeout(function() {
+                    var containers = document.querySelectorAll('.interactive-c-container');
+                    debugOutput.innerHTML += '<p>🔍 Conteneurs interactifs créés: ' + containers.length + '</p>';
+                }, 2000);
+
+            }, 500);
+        });
+
+        // Override de la fonction pour plus de debug
+        var originalInitializeInteractiveBlock = window.initializeInteractiveBlock;
+        window.initializeInteractiveBlock = function(preElement) {
+            console.log('🎯 initializeInteractiveBlock appelée pour:', preElement);
+            console.log('Classes du pre:', preElement.className);
+
+            var debugOutput = document.getElementById('debug-output');
+            debugOutput.innerHTML += '<p>🎯 Transformation d\'un bloc interactive-c</p>';
+
+            // Appeler la fonction originale
+            if (originalInitializeInteractiveBlock) {
+                originalInitializeInteractiveBlock(preElement);
+            }
+        };
+    </script>
+</body>
+</html>

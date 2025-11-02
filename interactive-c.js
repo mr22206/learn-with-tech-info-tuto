@@ -1,25 +1,70 @@
 // Script d'exécution de code C interactif
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Script interactif C chargé');
+
     // Attendre que CodeMirror soit chargé
     if (typeof CodeMirror === 'undefined') {
-        console.log('CodeMirror pas encore chargé, attente...');
+        console.log('⏳ CodeMirror pas encore chargé, attente...');
         setTimeout(arguments.callee, 100);
         return;
     }
 
-    console.log('CodeMirror chargé, initialisation...');
+    console.log('✅ CodeMirror chargé, initialisation...');
 
     // Initialiser le bloc de test simple
     const editorContainer = document.getElementById('editor-container');
     if (editorContainer) {
+        console.log('🎯 Initialisation bloc test');
         initializeTestBlock(editorContainer);
     }
 
-    // Initialiser tous les blocs de code interactifs (pour Quarto)
-    const codeBlocks = document.querySelectorAll('pre.interactive-c');
-    codeBlocks.forEach(function(block) {
-        initializeInteractiveBlock(block);
-    });
+    // Attendre un peu plus pour que Quarto finisse de générer le contenu
+    setTimeout(function() {
+        console.log('🔍 Recherche des blocs interactifs...');
+
+        // Initialiser tous les blocs de code interactifs (pour Quarto)
+        const codeBlocks = document.querySelectorAll('pre.interactive-c');
+        console.log('📊 Blocs .interactive-c trouvés:', codeBlocks.length);
+
+        // Chercher aussi d'autres sélecteurs possibles
+        const sourceCodeBlocks = document.querySelectorAll('pre.sourceCode');
+        console.log('📊 Blocs .sourceCode trouvés:', sourceCodeBlocks.length);
+
+        const allPreBlocks = document.querySelectorAll('pre');
+        console.log('📊 Total blocs pre:', allPreBlocks.length);
+
+        // Lister les classes de tous les pre
+        allPreBlocks.forEach(function(block, index) {
+            console.log('  pre[' + index + '] classes:', block.className);
+            if (block.className && block.className.includes('interactive-c')) {
+                console.log('  🎯 Bloc interactif trouvé, transformation...');
+                initializeInteractiveBlock(block);
+            }
+        });
+
+        // Essayer aussi avec MutationObserver pour les changements dynamiques
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            const interactiveBlocks = node.querySelectorAll ? node.querySelectorAll('pre.interactive-c') : [];
+                            interactiveBlocks.forEach(function(block) {
+                                console.log('🎯 Nouveau bloc interactif détecté');
+                                initializeInteractiveBlock(block);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+    }, 1000);
 });
 
 function initializeTestBlock(editorContainer) {
