@@ -8,7 +8,7 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 
 **Question :** Sans exécuter le code, prédisez ce qu'afficheront les `printf` suivants. Cliquez sur "Run" pour vérifier votre prédiction.
 
-<iframe src="https://www.jdoodle.com/embed/v1/a02095f51720d2c2" width="100%" height="350" frameborder="0"></iframe>
+<iframe src="https://replit.com/@TechInfoTuto/Exercice-1-C-sizeof-strlen?embed=true" width="100%" height="350" frameborder="0"></iframe>
 
 <details>
 <summary><a href="#r1-c-pdf">🔵 Correction et Explications</a></summary>
@@ -33,7 +33,7 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 
 **Question :** L'un de ces deux extraits de code va provoquer un crash. Lequel et pourquoi ? Décommentez la ligne fautive dans le Snippet B pour voir l'erreur.
 
-<iframe src="https://www.jdoodle.com/embed/v1/374c65e8a60459a9" width="100%" height="450" frameborder="0"></iframe>
+<iframe src="https://replit.com/@TechInfoTuto/Exercice-2-C-Droit-de-Modifier?embed=true" width="100%" height="450" frameborder="0"></iframe>
 
 <details>
 <summary><a href="#r2-c-pdf">🔵 Correction et Explications</a></summary>
@@ -51,7 +51,7 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 
 **Question :** L'utilisateur tape `admin` et appuie sur Entrée. Pourquoi le programme affiche-t-il "Accès refusé" ? Essayez de corriger le code en décommentant la ligne de correction.
 
-<iframe src="https://www.jdoodle.com/embed/v1/f2d765a0b73c4e33" width="100%" height="450" frameborder="0"></iframe>
+<iframe src="https://replit.com/@TechInfoTuto/Exercice-3-C-Caractre-Fantme?embed=true" width="100%" height="450" frameborder="0"></iframe>
 
 <details>
 <summary><a href="#r3-c-pdf">🔵 Correction et Explications</a></summary>
@@ -73,7 +73,7 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 
 **Question :** Qu'affichera le code suivant ?
 
-<iframe src="https://www.jdoodle.com/embed/v1/a3b1a26569209581" width="100%" height="300" frameborder="0"></iframe>
+<iframe src="https://replit.com/@TechInfoTuto/Exercice-4-C-Compter-en-UTF-8?embed=true" width="100%" height="300" frameborder="0"></iframe>
 
 <details>
 <summary><a href="#r4-c-pdf">🔵 Correction et Explications</a></summary>

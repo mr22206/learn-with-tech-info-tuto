@@ -8,7 +8,7 @@ Ces exercices sont conçus pour tester les concepts clés et les pièges courant
 
 **Question :** Déterminez la complexité (en notation Big O) pour chacun des extraits de code suivants. Vous pouvez modifier la valeur de `n` et exécuter le code pour observer le comportement.
 
-<iframe src="https://www.jdoodle.com/embed/v1/a1ba82c3c73448f" width="100%" height="600" frameborder="0"></iframe>
+<iframe src="https://replit.com/@TechInfoTuto/Exercice-1-Algo-Complexit?embed=true" width="100%" height="600" frameborder="0"></iframe>
 
 <details>
 <summary><a href="#r1-algo-pdf">🔵 Correction et Explications</a></summary>
@@ -35,7 +35,7 @@ Ces exercices sont conçus pour tester les concepts clés et les pièges courant
 
 **Question :** Vous devez trouver la position du chiffre `9` dans ce tableau. Si vous utilisez un algorithme de recherche dichotomique, que se passera-t-il ? (Note: Le code fourni est un exemple de recherche dichotomique correcte, mais appliquée au mauvais tableau).
 
-<iframe src="https://www.jdoodle.com/embed/v1/c7d370e7e1039803" width="100%" height="550" frameborder="0"></iframe>
+<iframe src="https://replit.com/@TechInfoTuto/Exercice-2-Algo-Dichotomie?embed=true" width="100%" height="550" frameborder="0"></iframe>
 
 <details>
 <summary><a href="#r2-algo-pdf">🔵 Correction et Explications</a></summary>
@@ -53,7 +53,7 @@ Ces exercices sont conçus pour tester les concepts clés et les pièges courant
 
 **Question :** Montrez l'état du tableau après **chaque passe** de la boucle principale d'un tri par sélection. Le code ci-dessous implémente ce tri et affiche l'état du tableau à chaque étape.
 
-<iframe src="https://www.jdoodle.com/embed/v1/e45014c6e949479b" width="100%" height="600" frameborder="0"></iframe>
+<iframe src="https://replit.com/@TechInfoTuto/Exercice-3-Algo-Tri-Slection?embed=true" width="100%" height="600" frameborder="0"></iframe>
 
 <details>
 <summary><a href="#r3-algo-pdf">🔵 Correction et Explications</a></summary>
@@ -80,8 +80,6 @@ Le principe du tri par sélection est : "à chaque passe, on trouve le plus peti
 - **Le Déclic :** Cet exercice montre que le tri peut être terminé visuellement bien avant la fin de l'algorithme. Le tri par sélection n'a aucun moyen de le savoir et continuera ses passes jusqu'au bout. Il est "stupide" dans le sens où il ne s'adapte pas à l'état du tableau.
 
 </details>
-
----
 
 ## Corrigés
 
