@@ -99,56 +99,89 @@ function initializeTestBlock(editorContainer) {
 }
 
 function initializeInteractiveBlock(preElement) {
-    // Créer la structure interactive
-    var container = document.createElement('div');
-    container.className = 'interactive-c-container';
-    container.style.cssText = 'border: 2px solid #ddd; border-radius: 8px; margin: 1em 0; padding: 1em; background: #f9f9f9;';
+    try {
+        console.log('🎯 Initialisation d\'un bloc interactif');
 
-    var header = document.createElement('div');
-    header.className = 'interactive-c-header';
-    header.style.cssText = 'display: flex; justify-content: flex-end; margin-bottom: 0.5em;';
-
-    var runButton = document.createElement('button');
-    runButton.textContent = '▶ Exécuter';
-    runButton.className = 'run-button';
-    runButton.style.cssText = 'background: #28a745; color: white; border: none; padding: 0.5em 1em; border-radius: 5px; cursor: pointer; font-weight: bold;';
-
-    var editorContainer = document.createElement('div');
-    editorContainer.style.cssText = 'border: 1px solid #ccc; border-radius: 4px; margin-bottom: 1em;';
-
-    var output = document.createElement('pre');
-    output.className = 'output';
-    output.style.cssText = 'background: #333; color: #fff; padding: 1em; border-radius: 4px; font-family: "Courier New", monospace; white-space: pre-wrap; min-height: 100px;';
-    output.textContent = 'Le résultat s\'affichera ici...';
-
-    header.appendChild(runButton);
-    container.appendChild(header);
-    container.appendChild(editorContainer);
-    container.appendChild(output);
-
-    // Remplacer le bloc pré par le conteneur interactif
-    preElement.parentElement.replaceChild(container, preElement.parentElement);
-
-    // Initialiser CodeMirror
-    var editor = CodeMirror(editorContainer, {
-        value: extractCodeFromPre(preElement),
-        mode: 'text/x-csrc',
-        lineNumbers: true,
-        theme: 'default',
-        readOnly: false
-    });
-
-    // Gestionnaire d'événement pour le bouton
-    runButton.addEventListener('click', function() {
-        var code = editor.getValue();
-        output.textContent = 'Compilation en cours...';
-
-        try {
-            executeCCode(code, output);
-        } catch (error) {
-            output.textContent = 'Erreur : ' + error.message;
+        // Vérifier que l'élément existe toujours
+        if (!preElement || !preElement.parentElement) {
+            console.warn('Bloc pré introuvable ou déjà remplacé');
+            return;
         }
-    });
+
+        // Créer la structure interactive
+        var container = document.createElement('div');
+        container.className = 'interactive-c-container';
+        container.style.cssText = 'border: 2px solid #ddd; border-radius: 8px; margin: 1em 0; padding: 1em; background: #f9f9f9;';
+
+        var header = document.createElement('div');
+        header.className = 'interactive-c-header';
+        header.style.cssText = 'display: flex; justify-content: flex-end; margin-bottom: 0.5em;';
+
+        var runButton = document.createElement('button');
+        runButton.textContent = '▶ Exécuter';
+        runButton.className = 'run-button';
+        runButton.style.cssText = 'background: #28a745; color: white; border: none; padding: 0.5em 1em; border-radius: 5px; cursor: pointer; font-weight: bold;';
+
+        var editorContainer = document.createElement('div');
+        editorContainer.style.cssText = 'border: 1px solid #ccc; border-radius: 4px; margin-bottom: 1em; min-height: 200px;';
+
+        var output = document.createElement('pre');
+        output.className = 'output';
+        output.style.cssText = 'background: #333; color: #fff; padding: 1em; border-radius: 4px; font-family: "Courier New", monospace; white-space: pre-wrap; min-height: 100px;';
+        output.textContent = 'Le résultat s\'affichera ici...';
+
+        header.appendChild(runButton);
+        container.appendChild(header);
+        container.appendChild(editorContainer);
+        container.appendChild(output);
+
+        // Remplacer le bloc pré par le conteneur interactif
+        preElement.parentElement.replaceChild(container, preElement.parentElement);
+
+        console.log('✅ Structure HTML créée');
+
+        // Attendre un peu avant d'initialiser CodeMirror
+        setTimeout(function() {
+            try {
+                console.log('🎯 Initialisation CodeMirror');
+
+                // Initialiser CodeMirror avec des options plus sûres
+                var editor = CodeMirror(editorContainer, {
+                    value: extractCodeFromPre(preElement),
+                    mode: 'text/x-csrc',
+                    lineNumbers: true,
+                    theme: 'default',
+                    readOnly: false,
+                    lineWrapping: false,
+                    viewportMargin: 10
+                });
+
+                console.log('✅ CodeMirror initialisé');
+
+                // Gestionnaire d'événement pour le bouton
+                runButton.addEventListener('click', function() {
+                    var code = editor.getValue();
+                    output.textContent = 'Compilation en cours...';
+
+                    try {
+                        executeCCode(code, output);
+                    } catch (error) {
+                        output.textContent = 'Erreur : ' + error.message;
+                        console.error('Erreur lors de l\'exécution:', error);
+                    }
+                });
+
+                console.log('✅ Gestionnaire d\'événements configuré');
+
+            } catch (cmError) {
+                console.error('❌ Erreur CodeMirror:', cmError);
+                output.textContent = 'Erreur d\'initialisation de l\'éditeur: ' + cmError.message;
+            }
+        }, 100);
+
+    } catch (blockError) {
+        console.error('❌ Erreur lors de l\'initialisation du bloc:', blockError);
+    }
 }
 
 function extractCodeFromPre(preElement) {
