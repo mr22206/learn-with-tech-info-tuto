@@ -1,18 +1,30 @@
 // Ce script sera vide pour l'instant.
 // Il sera rempli à la prochaine étape.
 
-window.addEventListener('load', () => {
-    // Initialise le compilateur C via WebAssembly
+function initializeInteractiveBlocks() {
+    // Si les blocs sont déjà initialisés, on ne fait rien
+    if (document.querySelector('.interactive-c-container')) {
+        return;
+    }
+
+    const codeBlocks = document.querySelectorAll('pre.interactive-c');
+    
+    // Si on ne trouve pas encore les blocs, on ne fait rien pour l'instant
+    if (codeBlocks.length === 0) {
+        return;
+    }
+
+    // On a trouvé les blocs, on peut arrêter de vérifier
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+    
     const tcc = new TCC();
     
-    // Cible directement les balises <pre> qui ont notre classe
-    const codeBlocks = document.querySelectorAll('pre.interactive-c');
-
     codeBlocks.forEach(preElement => {
-        const parentDiv = preElement.parentElement; // Le <div class="sourceCode">
+        const parentDiv = preElement.parentElement;
         const initialCode = preElement.textContent.trim();
         
-        // Crée la structure HTML pour l'éditeur, le header et l'output
         const container = document.createElement('div');
         container.className = 'interactive-c-container';
 
@@ -68,4 +80,14 @@ window.addEventListener('load', () => {
             }
         });
     });
-});
+}
+
+// On lance une vérification toutes les 100ms
+const intervalId = setInterval(initializeInteractiveBlocks, 100);
+
+// Sécurité : on arrête tout après 5 secondes si rien n'est trouvé
+setTimeout(() => {
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+}, 5000);
