@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialise le compilateur C via WebAssembly
     const tcc = new TCC();
     
-    // Trouve tous les blocs de code C standard (.sourceCode) UNIQUEMENT sur les pages marquées comme "page-exercices"
-    const codeBlocks = document.querySelectorAll('.page-exercices .sourceCode');
+    // Cible directement les balises <pre> qui ont notre classe
+    const codeBlocks = document.querySelectorAll('pre.interactive-c');
 
-    codeBlocks.forEach(block => {
-        const initialCode = block.textContent.trim();
-        block.innerHTML = ''; // Vide le conteneur
-
+    codeBlocks.forEach(preElement => {
+        const parentDiv = preElement.parentElement; // Le <div class="sourceCode">
+        const initialCode = preElement.textContent.trim();
+        
         // Crée la structure HTML pour l'éditeur, le header et l'output
         const container = document.createElement('div');
         container.className = 'interactive-c-container';
@@ -33,7 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(header);
         container.appendChild(editorWrapper);
         container.appendChild(output);
-        block.appendChild(container);
+        
+        // Remplace l'ancien conteneur de code par notre nouvelle structure
+        parentDiv.parentElement.replaceChild(container, parentDiv);
 
         // Initialise l'éditeur CodeMirror
         const editor = CodeMirror(editorWrapper, {
@@ -54,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const stdout = new TextDecoder().decode(result.stdout);
                     const stderr = new TextDecoder().decode(result.stderr);
                     let outputText = '';
-                    if (stdout) outputText += `Sortie standard :\n${stdout}`;
-                    if (stderr) outputText += `\nErreurs standard :\n${stderr}`;
+                    if (stdout) outputText += `${stdout}`;
+                    if (stderr) outputText += `\n${stderr}`;
                     output.textContent = outputText.trim() || 'Le programme s\'est exécuté sans rien afficher.';
                 } else {
                     const stderr = new TextDecoder().decode(result.stderr);
