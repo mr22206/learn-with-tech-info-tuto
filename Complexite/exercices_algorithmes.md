@@ -8,7 +8,43 @@ Ces exercices sont conçus pour tester les concepts clés et les pièges courant
 
 **Question :** Déterminez la complexité (en notation Big O) pour chacun des extraits de code suivants. Vous pouvez modifier la valeur de `n` et exécuter le code pour observer le comportement.
 
-<iframe src="https://replit.com/@TechInfoTuto/Exercice-1-Algo-Complexit?embed=true" width="100%" height="600" frameborder="0"></iframe>
+```{.c .interactive-c}
+#include <stdio.h>
+#include <time.h>
+
+void snippet_A(int n) {
+    int count = 0;
+    for (int i = 0; i < n; i++) { count++; }
+    for (int j = 0; j < n; j++) { count++; }
+    printf("Snippet A (O(n)) pour n=%d, count=%d\n", n, count);
+}
+
+void snippet_B(int n) {
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            count++;
+        }
+    }
+    printf("Snippet B (O(n^2)) pour n=%d, count=%d\n", n, count);
+}
+
+void snippet_C(int n) {
+    int count = 0;
+    for (int i = 1; i < n; i = i * 2) {
+        count++;
+    }
+    printf("Snippet C (O(log n)) pour n=%d, count=%d\n", n, count);
+}
+
+int main() {
+    int n = 100; // Modifiez cette valeur pour voir l'impact
+    snippet_A(n);
+    snippet_B(n);
+    snippet_C(n);
+    return 0;
+}
+```
 
 <details>
 <summary><a href="#r1-algo-pdf">🔵 Correction et Explications</a></summary>
@@ -35,7 +71,44 @@ Ces exercices sont conçus pour tester les concepts clés et les pièges courant
 
 **Question :** Vous devez trouver la position du chiffre `9` dans ce tableau. Si vous utilisez un algorithme de recherche dichotomique, que se passera-t-il ? (Note: Le code fourni est un exemple de recherche dichotomique correcte, mais appliquée au mauvais tableau).
 
-<iframe src="https://replit.com/@TechInfoTuto/Exercice-2-Algo-Dichotomie?embed=true" width="100%" height="550" frameborder="0"></iframe>
+```{.c .interactive-c}
+#include <stdio.h>
+
+int recherche_dichotomique(int T[], int taille, int valeur) {
+    int debut = 0;
+    int fin = taille - 1;
+
+    while (debut <= fin) {
+        int milieu = debut + (fin - debut) / 2;
+        if (T[milieu] == valeur) {
+            return milieu;
+        }
+        if (T[milieu] < valeur) {
+            debut = milieu + 1;
+        } else {
+            fin = milieu - 1;
+        }
+    }
+    return -1; // Non trouvé
+}
+
+int main() {
+    int T[] = {10, 2, 8, 5, 9, 1}; // Tableau NON TRIÉ
+    int taille = sizeof(T) / sizeof(T[0]);
+    int valeur_a_trouver = 9;
+
+    int position = recherche_dichotomique(T, taille, valeur_a_trouver);
+
+    if (position != -1) {
+        printf("La valeur %d a été trouvée à l'index %d.\n", valeur_a_trouver, position);
+    } else {
+        printf("La valeur %d n'a pas été trouvée.\n", valeur_a_trouver);
+    }
+    printf("Note: Le résultat est probablement incorrect car le tableau n'est pas trié !");
+    
+    return 0;
+}
+```
 
 <details>
 <summary><a href="#r2-algo-pdf">🔵 Correction et Explications</a></summary>
@@ -53,7 +126,50 @@ Ces exercices sont conçus pour tester les concepts clés et les pièges courant
 
 **Question :** Montrez l'état du tableau après **chaque passe** de la boucle principale d'un tri par sélection. Le code ci-dessous implémente ce tri et affiche l'état du tableau à chaque étape.
 
-<iframe src="https://replit.com/@TechInfoTuto/Exercice-3-Algo-Tri-Slection?embed=true" width="100%" height="600" frameborder="0"></iframe>
+```{.c .interactive-c}
+#include <stdio.h>
+
+void afficher_tableau(int T[], int taille) {
+    for (int i = 0; i < taille; i++) {
+        printf("%d ", T[i]);
+    }
+    printf("\n");
+}
+
+void tri_selection(int T[], int taille) {
+    int i, j, min_idx;
+    for (i = 0; i < taille - 1; i++) {
+        min_idx = i;
+        for (j = i + 1; j < taille; j++) {
+            if (T[j] < T[min_idx]) {
+                min_idx = j;
+            }
+        }
+        // Échange
+        int temp = T[min_idx];
+        T[min_idx] = T[i];
+        T[i] = temp;
+
+        printf("État après passe %d: ", i + 1);
+        afficher_tableau(T, taille);
+    }
+}
+
+int main() {
+    int T[] = {5, 1, 4, 2};
+    int taille = sizeof(T) / sizeof(T[0]);
+    
+    printf("Tableau initial: ");
+    afficher_tableau(T, taille);
+    
+    tri_selection(T, taille);
+    
+    printf("Tableau final: ");
+    afficher_tableau(T, taille);
+    
+    return 0;
+}
+```
 
 <details>
 <summary><a href="#r3-algo-pdf">🔵 Correction et Explications</a></summary>

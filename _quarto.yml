@@ -51,3 +51,11 @@ format:
       dark: darkly
     css: styles.css
     toc: true
+    include-after-body:
+      - interactive-c.js
+      - href: https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js
+      - href: https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js
+      - href: https://cdn.jsdelivr.net/npm/tcc-js@0.0.15/tcc-js.js
+    include-in-header:
+      - href: https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css
+      - href: https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/eclipse.min.css

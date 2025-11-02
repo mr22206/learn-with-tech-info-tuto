@@ -8,7 +8,23 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 
 **Question :** Sans exécuter le code, prédisez ce qu'afficheront les `printf` suivants. Cliquez sur "Run" pour vérifier votre prédiction.
 
-<iframe src="https://replit.com/@TechInfoTuto/Exercice-1-C-sizeof-strlen?embed=true" width="100%" height="350" frameborder="0"></iframe>
+```{.c .interactive-c}
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str1[] = "test";
+    char str2[50] = "test";
+
+    printf("sizeof(str1) = %zu\n", sizeof(str1));
+    printf("strlen(str1) = %zu\n", strlen(str1));
+
+    printf("sizeof(str2) = %zu\n", sizeof(str2));
+    printf("strlen(str2) = %zu\n", strlen(str2));
+    
+    return 0;
+}
+```
 
 <details>
 <summary><a href="#r1-c-pdf">🔵 Correction et Explications</a></summary>
@@ -33,7 +49,32 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 
 **Question :** L'un de ces deux extraits de code va provoquer un crash. Lequel et pourquoi ? Décommentez la ligne fautive dans le Snippet B pour voir l'erreur.
 
-<iframe src="https://replit.com/@TechInfoTuto/Exercice-2-C-Droit-de-Modifier?embed=true" width="100%" height="450" frameborder="0"></iframe>
+```{.c .interactive-c}
+#include <stdio.h>
+
+void snippet_A() {
+    printf("--- Snippet A ---\n");
+    char strA[] = "modifiable";
+    printf("Avant: %s\n", strA);
+    strA[0] = 'M';
+    printf("Après: %s\n\n", strA);
+}
+
+void snippet_B() {
+    printf("--- Snippet B ---\n");
+    char *strB = "intouchable";
+    printf("Avant: %s\n", strB);
+    // Décommentez la ligne suivante pour voir le crash
+    // strB[0] = 'I'; 
+    printf("Après: %s\n", strB);
+}
+
+int main() {
+    snippet_A();
+    snippet_B();
+    return 0;
+}
+```
 
 <details>
 <summary><a href="#r2-c-pdf">🔵 Correction et Explications</a></summary>
@@ -51,7 +92,27 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 
 **Question :** L'utilisateur tape `admin` et appuie sur Entrée. Pourquoi le programme affiche-t-il "Accès refusé" ? Essayez de corriger le code en décommentant la ligne de correction.
 
-<iframe src="https://replit.com/@TechInfoTuto/Exercice-3-C-Caractre-Fantme?embed=true" width="100%" height="450" frameborder="0"></iframe>
+```{.c .interactive-c}
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char nom[20];
+    printf("Entrez votre nom : ");
+    fgets(nom, 20, stdin);
+
+    // Ligne de correction (à décommenter) :
+    // nom[strcspn(nom, "\n")] = 0;
+
+    if (strcmp(nom, "admin") == 0) {
+        printf("Bonjour, admin !\n");
+    } else {
+        printf("Accès refusé.\n");
+    }
+    
+    return 0;
+}
+```
 
 <details>
 <summary><a href="#r3-c-pdf">🔵 Correction et Explications</a></summary>
@@ -73,7 +134,18 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 
 **Question :** Qu'affichera le code suivant ?
 
-<iframe src="https://replit.com/@TechInfoTuto/Exercice-4-C-Compter-en-UTF-8?embed=true" width="100%" height="300" frameborder="0"></iframe>
+```{.c .interactive-c}
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    // Note: Le compilateur WASM ne gère pas bien l'UTF-8 directement
+    // dans le code source. Cette chaîne simule le comportement.
+    char s[] = { 0xc3, 0x87, 'a', ' ', 'v', 'a', ' ', '?', 0x00 }; // "Ça va ?" en UTF-8
+    printf("strlen(\"Ça va ?\") = %zu\n", strlen(s));
+    return 0;
+}
+```
 
 <details>
 <summary><a href="#r4-c-pdf">🔵 Correction et Explications</a></summary>
@@ -88,9 +160,6 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 - C'est la preuve que dès qu'on sort de l'anglais simple, on ne peut plus se fier à `strlen` pour connaître le nombre de symboles affichables dans une chaîne.
 
 </details>
-
----
-
 ## Corrigés
 
 ### <a id="r1-c-pdf"></a>Correction de l'Exercice 1
