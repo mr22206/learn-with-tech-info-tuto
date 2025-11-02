@@ -49,13 +49,13 @@ format:
     theme:
       light: cosmo
       dark: darkly
-    css: styles.css
     toc: true
-    include-after-body:
+    css:
+      - styles.css
+      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css
+      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/eclipse.min.css
+    js:
       - interactive-c.js
       - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js
       - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js
       - https://cdn.jsdelivr.net/npm/tcc-js@0.0.15/tcc-js.js
-    include-in-header:
-      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css
-      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/eclipse.min.css
