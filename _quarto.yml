@@ -51,7 +51,7 @@ format:
       dark: darkly
     toc: true
     css: styles.css
-    include-after-body:
+    js:
       - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js
       - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js
       - interactive-c.js
