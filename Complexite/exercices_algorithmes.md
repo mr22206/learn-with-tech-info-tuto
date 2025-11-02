@@ -138,4 +138,3 @@ Le principe du tri par sélection est : "à chaque passe, on trouve le plus peti
 <p align="center">
   by <a href="https://tech-info-tuto.vercel.app">TECH INFO TUTO</a> — All rights reserved © 2025–2025
 </p>
----

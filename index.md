@@ -12,4 +12,3 @@ Utilisez la barre de navigation sur la gauche pour explorer les différents chap
 <p align="center">
   by <a href="https://tech-info-tuto.vercel.app">TECH INFO TUTO</a> — All rights reserved © 2025–2025
 </p>
----

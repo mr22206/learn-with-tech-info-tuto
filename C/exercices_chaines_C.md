@@ -150,4 +150,3 @@ Ces exercices sont conçus pour provoquer des déclics sur les pièges les plus 
 <p align="center">
   by <a href="https://tech-info-tuto.vercel.app">TECH INFO TUTO</a> — All rights reserved © 2025–2025
 </p>
----

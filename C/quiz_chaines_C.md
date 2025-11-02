@@ -208,4 +208,3 @@ Cela prouve que dès qu'on sort des textes en anglais simple, `strlen` ne donne 
 <p align="center">
   by <a href="https://tech-info-tuto.vercel.app">TECH INFO TUTO</a> — All rights reserved © 2025–2025
 </p>
----

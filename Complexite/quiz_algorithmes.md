@@ -156,4 +156,3 @@ Quel sera l'état du tableau après la **première passe complète** de la boucl
 <p align="center">
   by <a href="https://tech-info-tuto.vercel.app">TECH INFO TUTO</a> — All rights reserved © 2025–2025
 </p>
----
