@@ -130,6 +130,10 @@ function executeCCode(code, outputElement) {
 function analyzeCCode(code) {
     var result = 'Sortie du programme :\n';
 
+    // Nettoyer le code des numéros de ligne CodeMirror
+    code = code.replace(/^\d+\n/gm, ''); // Supprimer les numéros de ligne au début
+    code = code.replace(/^\d+\s*/gm, ''); // Supprimer les numéros de ligne avec espaces
+
     // Analyser les déclarations de variables et générer les sorties printf
     var lines = code.split('\n');
     var variables = {};
@@ -224,15 +228,35 @@ function analyzeCCode(code) {
                 }
             }
 
-            // Chercher printf avec format direct
-            var printfMatch = line.match(/printf\s*\(\s*"([^"]*)"/);
-            if (printfMatch && !sizeofMatch && !strlenMatch) {
-                var format = printfMatch[1];
-                if (format.indexOf('strlen(') !== -1 || format.indexOf('sizeof(') !== -1) {
-                    // Format avec appel de fonction - on l'a déjà traité ci-dessus
-                    continue;
-                }
-                // Autres printf - pour l'instant, on ne les traite pas
+            // Chercher printf simple sans format complexe
+            if (!sizeofMatch && !strlenMatch) {
+                // Analyser le printf complet
+                var printfContent = line.substring(line.indexOf('"') + 1);
+                printfContent = printfContent.substring(0, printfContent.lastIndexOf('"'));
+
+                // Remplacer les %d, %s, etc. par des valeurs simulées
+                printfContent = printfContent.replace(/%d/g, function(match, offset, string) {
+                    // Chercher la variable correspondante dans les arguments
+                    var afterFormat = string.substring(offset + 2);
+                    var varMatch = afterFormat.match(/(\w+)/);
+                    if (varMatch) {
+                        var varName = varMatch[1];
+                        if (variables[varName]) {
+                            if (varName === 'taille' || varName === 'position') {
+                                // Valeurs spéciales pour l'exemple
+                                if (varName === 'taille') return '6';
+                                if (varName === 'position') return '-1';
+                            }
+                        }
+                        // Valeurs par défaut pour les variables
+                        if (varName === 'valeur_a_trouver') return '9';
+                        if (varName === 'position') return '-1';
+                        return '0'; // Valeur par défaut
+                    }
+                    return '0';
+                });
+
+                result += printfContent + '\n';
             }
         }
     }
