@@ -27,7 +27,9 @@ website:
             - C/recapitulatif_chaines_C.md
         - section: "Pratique"
           contents:
-            - C/exercices_chaines_C.md
+            - file: C/exercices_chaines_C.md
+              html-attributes:
+                class: page-exercices
             - C/quiz_chaines_C.md
 
     - id: algo
@@ -41,7 +43,9 @@ website:
             - Complexite/recapitulatif_algorithmes.md
         - section: "Pratique"
           contents:
-            - Complexite/exercices_algorithmes.md
+            - file: Complexite/exercices_algorithmes.md
+              html-attributes:
+                class: page-exercices
             - Complexite/quiz_algorithmes.md
 
 format:

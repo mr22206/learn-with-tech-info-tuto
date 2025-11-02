@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialise le compilateur C via WebAssembly
     const tcc = new TCC();
     
-    // Trouve tous les conteneurs de code C à rendre interactifs
-    const codeBlocks = document.querySelectorAll('.interactive-c');
+    // Trouve tous les blocs de code C standard (.sourceCode) UNIQUEMENT sur les pages marquées comme "page-exercices"
+    const codeBlocks = document.querySelectorAll('.page-exercices .sourceCode');
 
     codeBlocks.forEach(block => {
         const initialCode = block.textContent.trim();
