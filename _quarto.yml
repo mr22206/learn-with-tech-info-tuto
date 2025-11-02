@@ -51,9 +51,8 @@ format:
       dark: darkly
     toc: true
     css: styles.css
-    js:
-      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js
-      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js
-      - interactive-c.js
-    include-in-header:
-      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css
+    include-in-header: |
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
+    js: interactive-c.js
