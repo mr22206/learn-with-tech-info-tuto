@@ -128,46 +128,119 @@ function executeCCode(code, outputElement) {
 }
 
 function analyzeCCode(code) {
-    var result = '';
+    var result = 'Sortie du programme :\n';
 
-    // Analyser les déclarations de variables
-    var str1Size = 5; // sizeof("test") + 1 pour \0
-    var str2Size = 50; // taille par défaut du tableau
-    var str1Content = "test";
-    var str2Content = "test";
+    // Analyser les déclarations de variables et générer les sorties printf
+    var lines = code.split('\n');
+    var variables = {};
 
-    // Chercher la déclaration de str1
-    var str1Match = code.match(/char\s+str1\[\]\s*=\s*"([^"]*)"/);
-    if (str1Match) {
-        str1Content = str1Match[1];
-        str1Size = str1Content.length + 1; // +1 pour \0
+    // Première passe : analyser les déclarations de variables
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+
+        // Déclaration char str[] = "chaine"
+        var strArrayMatch = line.match(/char\s+(\w+)\[\]\s*=\s*"([^"]*)"/);
+        if (strArrayMatch) {
+            var varName = strArrayMatch[1];
+            var content = strArrayMatch[2];
+            variables[varName] = {
+                type: 'array_auto',
+                content: content,
+                size: content.length + 1 // +1 pour \0
+            };
+        }
+
+        // Déclaration char str[size] = "chaine"
+        var strFixedMatch = line.match(/char\s+(\w+)\[(\d+)\]\s*=\s*"([^"]*)"/);
+        if (strFixedMatch) {
+            var varName = strFixedMatch[1];
+            var declaredSize = parseInt(strFixedMatch[2]);
+            var content = strFixedMatch[3];
+            variables[varName] = {
+                type: 'array_fixed',
+                content: content,
+                size: declaredSize
+            };
+        }
+
+        // Déclaration char str[] = { octets }
+        var byteArrayMatch = line.match(/char\s+(\w+)\[\]\s*=\s*\{\s*([^}]+)\s*\}/);
+        if (byteArrayMatch) {
+            var varName = byteArrayMatch[1];
+            var byteList = byteArrayMatch[2];
+            // Analyser les octets (simplifié)
+            var bytes = byteList.split(',').map(function(b) {
+                b = b.trim();
+                if (b.startsWith('0x')) {
+                    return parseInt(b, 16);
+                } else if (b === '0x00') {
+                    return 0;
+                } else if (b.startsWith("'")) {
+                    return b.charCodeAt(1); // Caractère simple
+                }
+                return parseInt(b) || 0;
+            });
+
+            // Calculer la longueur de la chaîne (jusqu'à \0)
+            var strLength = 0;
+            for (var j = 0; j < bytes.length; j++) {
+                if (bytes[j] === 0) break;
+                strLength++;
+            }
+
+            variables[varName] = {
+                type: 'byte_array',
+                bytes: bytes,
+                size: bytes.length,
+                strLength: strLength
+            };
+        }
     }
 
-    // Chercher la déclaration de str2
-    var str2Match = code.match(/char\s+str2\[(\d+)\]\s*=\s*"([^"]*)"/);
-    if (str2Match) {
-        str2Size = parseInt(str2Match[1]);
-        str2Content = str2Match[2];
+    // Deuxième passe : analyser les printf et générer la sortie
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+
+        if (line.indexOf('printf') !== -1) {
+            // Chercher sizeof(variable)
+            var sizeofMatch = line.match(/sizeof\((\w+)\)/);
+            if (sizeofMatch) {
+                var varName = sizeofMatch[1];
+                if (variables[varName]) {
+                    result += 'sizeof(' + varName + ') = ' + variables[varName].size + '\n';
+                }
+            }
+
+            // Chercher strlen(variable)
+            var strlenMatch = line.match(/strlen\((\w+)\)/);
+            if (strlenMatch) {
+                var varName = strlenMatch[1];
+                if (variables[varName]) {
+                    if (variables[varName].type === 'byte_array') {
+                        result += 'strlen(' + varName + ') = ' + variables[varName].strLength + '\n';
+                    } else {
+                        result += 'strlen(' + varName + ') = ' + variables[varName].content.length + '\n';
+                    }
+                }
+            }
+
+            // Chercher printf avec format direct
+            var printfMatch = line.match(/printf\s*\(\s*"([^"]*)"/);
+            if (printfMatch && !sizeofMatch && !strlenMatch) {
+                var format = printfMatch[1];
+                if (format.indexOf('strlen(') !== -1 || format.indexOf('sizeof(') !== -1) {
+                    // Format avec appel de fonction - on l'a déjà traité ci-dessus
+                    continue;
+                }
+                // Autres printf - pour l'instant, on ne les traite pas
+            }
+        }
     }
 
-    // Générer la sortie selon les printf présents
-    if (code.indexOf('printf') !== -1) {
-        result += 'Sortie du programme :\n';
-
-        if (code.indexOf('sizeof(str1)') !== -1) {
-            result += 'sizeof(str1) = ' + str1Size + '\n';
-        }
-        if (code.indexOf('strlen(str1)') !== -1) {
-            result += 'strlen(str1) = ' + str1Content.length + '\n';
-        }
-        if (code.indexOf('sizeof(str2)') !== -1) {
-            result += 'sizeof(str2) = ' + str2Size + '\n';
-        }
-        if (code.indexOf('strlen(str2)') !== -1) {
-            result += 'strlen(str2) = ' + str2Content.length + '\n';
-        }
-    } else {
-        result += 'Code compilé sans erreurs apparentes';
+    // Si aucun printf n'a été trouvé, donner un message par défaut
+    if (result === 'Sortie du programme :\n') {
+        result += 'Aucune sortie printf détectée dans le code.\n';
+        result += 'Ajoutez des printf() pour voir les résultats !';
     }
 
     return result;
