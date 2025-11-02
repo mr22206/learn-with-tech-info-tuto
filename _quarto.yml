@@ -50,12 +50,10 @@ format:
       light: cosmo
       dark: darkly
     toc: true
-    css:
-      - styles.css
-      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css
-      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/eclipse.min.css
-    js:
-      - interactive-c.js
+    css: styles.css
+    include-after-body:
       - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js
       - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js
-      - https://cdn.jsdelivr.net/npm/tcc-js@0.0.15/tcc-js.js
+      - interactive-c.js
+    include-in-header:
+      - https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css
