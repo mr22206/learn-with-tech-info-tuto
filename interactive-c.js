@@ -140,20 +140,23 @@ function initializeInteractiveBlock(preElement) {
 
         console.log('✅ Structure HTML créée');
 
-        // Attendre un peu avant d'initialiser CodeMirror
+        // Attendre que le DOM soit complètement prêt
         setTimeout(function() {
             try {
-                console.log('🎯 Initialisation CodeMirror');
+                console.log('🎯 Initialisation CodeMirror 5');
 
-                // Initialiser CodeMirror avec des options plus sûres
+                // Configuration minimale et sûre pour CodeMirror 5
                 var editor = CodeMirror(editorContainer, {
                     value: extractCodeFromPre(preElement),
                     mode: 'text/x-csrc',
-                    lineNumbers: true,
                     theme: 'default',
+                    lineNumbers: true,
                     readOnly: false,
+                    // Options de base pour éviter les erreurs
                     lineWrapping: false,
-                    viewportMargin: 10
+                    indentUnit: 4,
+                    tabSize: 4,
+                    autofocus: false
                 });
 
                 console.log('✅ CodeMirror initialisé');
@@ -175,9 +178,30 @@ function initializeInteractiveBlock(preElement) {
 
             } catch (cmError) {
                 console.error('❌ Erreur CodeMirror:', cmError);
-                output.textContent = 'Erreur d\'initialisation de l\'éditeur: ' + cmError.message;
+                // Fallback : afficher le code dans une textarea simple
+                try {
+                    var textarea = document.createElement('textarea');
+                    textarea.value = extractCodeFromPre(preElement);
+                    textarea.style.cssText = 'width: 100%; min-height: 150px; font-family: monospace; padding: 0.5em;';
+                    editorContainer.appendChild(textarea);
+
+                    runButton.addEventListener('click', function() {
+                        var code = textarea.value;
+                        output.textContent = 'Compilation en cours...';
+                        try {
+                            executeCCode(code, output);
+                        } catch (error) {
+                            output.textContent = 'Erreur : ' + error.message;
+                        }
+                    });
+
+                    console.log('✅ Fallback textarea activé');
+                } catch (fallbackError) {
+                    console.error('❌ Erreur fallback:', fallbackError);
+                    output.textContent = 'Erreur critique : Impossible d\'initialiser l\'éditeur.\nCode original :\n' + extractCodeFromPre(preElement);
+                }
             }
-        }, 100);
+        }, 500); // Délai plus long pour s'assurer que tout est chargé
 
     } catch (blockError) {
         console.error('❌ Erreur lors de l\'initialisation du bloc:', blockError);
