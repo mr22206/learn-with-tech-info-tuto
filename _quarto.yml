@@ -1,0 +1,53 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Cours de Programmation"
+  description: "Collection de cours et d'exercices sur le C et les algorithmes."
+  
+  navbar:
+    left:
+      - href: index.md
+        text: Accueil
+      - text: "Langage C"
+        href: C/guide_chaines_C.md
+      - text: "Algorithmes & Complexité"
+        href: Complexite/guide_algorithmes.md
+
+  sidebar:
+    - id: c
+      title: "Langage C"
+      style: "docked"
+      background: "light"
+      contents:
+        - section: "Cours"
+          contents:
+            - C/guide_chaines_C.md
+            - C/recapitulatif_chaines_C.md
+        - section: "Pratique"
+          contents:
+            - C/exercices_chaines_C.md
+            - C/quiz_chaines_C.md
+
+    - id: algo
+      title: "Algorithmes & Complexité"
+      style: "docked"
+      background: "light"
+      contents:
+        - section: "Cours"
+          contents:
+            - Complexite/guide_algorithmes.md
+            - Complexite/recapitulatif_algorithmes.md
+        - section: "Pratique"
+          contents:
+            - Complexite/exercices_algorithmes.md
+            - Complexite/quiz_algorithmes.md
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    css: styles.css
+    toc: true
