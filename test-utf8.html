@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test UTF-8</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .interactive-c-container { border: 2px solid #ddd; border-radius: 8px; margin: 1em 0; padding: 1em; background: #f9f9f9; }
+        .interactive-c-header { display: flex; justify-content: flex-end; margin-bottom: 0.5em; }
+        .run-button { background: #28a745; color: white; border: none; padding: 0.5em 1em; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .run-button:hover { background: #218838; }
+        .output { background: #333; color: #fff; padding: 1em; border-radius: 4px; font-family: 'Courier New', monospace; white-space: pre-wrap; min-height: 100px; }
+    </style>
+</head>
+<body>
+    <h1>Test UTF-8</h1>
+
+    <div class="interactive-c-container">
+        <div class="interactive-c-header">
+            <button class="run-button">▶ Exécuter</button>
+        </div>
+        <div id="editor-container"></div>
+        <pre class="output">Le résultat s'affichera ici...</pre>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js"></script>
+    <script src="interactive-c.js"></script>
+
+    <script>
+        // Initialiser avec le code UTF-8 de test
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var editor = document.querySelector('.CodeMirror');
+                if (editor && editor.CodeMirror) {
+                    editor.CodeMirror.setValue(`#include <stdio.h>
+#include <string.h>
+
+int main() {
+    // Note: Le compilateur WASM ne gère pas bien l'UTF-8 directement
+    // dans le code source. Cette chaîne simule le comportement.
+    char s[] = { 0xc3, 0x87, 'a', ' ', 'v', 'a', ' ', '?', 0x00 }; // "Ça va ?" en UTF-8
+
+    printf("strlen(\\"Ça va ?\\") = %zu\\n", strlen(s));
+
+    return 0;
+}`);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
